@@ -47,10 +47,44 @@ $("#submit-train").on("click", function(snapshot){
 		nextArrival: nextArrival,
 		minutesAway:minutesAway
 	});
+});
 
-	
 //dynamically create a table from jquery using tbody
 
+	var trains = firebase.database().ref();
+	
+	trains.on('child_added', function(data){
+		console.log(data.val());
+		console.log(data.val().name);
+		r = $("<tr>");
+		var name = $("<td>");
+		console.log(name)
+		name.append(data.val().name);
+		r.append(name);
+		var destination = $("<td>");
+		destination.append(data.val().destination);
+		r.append(destination);
+		var frequency = $("<td>");
+		frequency.append(data.val().frequency);
+		r.append(frequency);
+
+//**************** get date difference ************************
+
+  /*    var addDate = moment(data.val().startDate);
+		console.log(addDate);
+		var dateTime = new Date(moment());
+		var interimDate = moment(dateTime).format("MM/DD/YY");
+		var endDate = moment(endDate);
+  		//console.log('Difference is ', endDate.diff(addDate, 'months'), 'months');
+  		var diffDate = endDate.diff(addDate, 'months')
+  		console.log(diffDate);  */
+
+//*****************************************************************
+		//var nextArrival = $("<td>");
+		//nextArrival.append(data.val().nextArrival);
+		//console.log(moment(nextArrival, 'HH:mm').format('hh:mm a'));
+
+		$("tbody").append(r);
 
 
 
