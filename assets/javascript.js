@@ -29,13 +29,11 @@ $("#submit-train").on("click", function(snapshot){
 	$("#frequency").val("");
 	nextArrival = $("#firstTrainTime").val().trim();
 	$("#firstTrainTime").val("");
-	minutesAway = $("#minutesAway").val().trim();
-	$("#minutesAway").val("");
+
 	console.log(name);
 	console.log(frequency);
 	console.log(destination);
 	console.log(nextArrival);
-	console.log(minutesAway);
 
 
 
@@ -45,7 +43,6 @@ $("#submit-train").on("click", function(snapshot){
 		destination: destination,
 		frequency: frequency,
 		nextArrival: nextArrival,
-		minutesAway:minutesAway
 	});
 });
 
@@ -58,7 +55,6 @@ $("#submit-train").on("click", function(snapshot){
 		console.log(data.val().name);
 		r = $("<tr>");
 		var name = $("<td>");
-		console.log(name)
 		name.append(data.val().name);
 		r.append(name);
 		var destination = $("<td>");
@@ -67,6 +63,29 @@ $("#submit-train").on("click", function(snapshot){
 		var frequency = $("<td>");
 		frequency.append(data.val().frequency);
 		r.append(frequency);
+		//var nextArrival= $("<td>");
+		//nextArrival.append(data.val().nextArrival);
+		//
+		var firstTrain = moment(data.val().nextArrival, "HH:mm");
+		console.log(firstTrain);
+		//var hour12 = moment(firstTrain, "HH:mm").format("hh:mm");
+		//console.log(hour12);
+		var currentTime = moment();
+		console.log(currentTime);
+
+		var frequency = data.val().frequency;
+		console.log(frequency);
+
+		do {
+		firstTrain.add(frequency, 'm') 
+		}
+		while (firstTrain < currentTime);
+		//nextArrival.append(firstTrain.format("HH:mm"));
+		console.log(firstTrain.format("hh:mm a"));
+		//nextArrival.append(data.val().nextArrival)
+		//r.append(firstTrain);
+
+
 
 //**************** get date difference ************************
 
@@ -80,9 +99,13 @@ $("#submit-train").on("click", function(snapshot){
   		console.log(diffDate);  */
 
 //*****************************************************************
-		//var nextArrival = $("<td>");
-		//nextArrival.append(data.val().nextArrival);
+		//console.log(moment("13:45", "HH:mm A'").format("hh:mm"));
 		//console.log(moment(nextArrival, 'HH:mm').format('hh:mm a'));
+		//var nextTrain = moment(data.val().nextArrival), 'HH:mm'.format('hh:mm a');
+		//console.log(nextTrain);
+		//nextArrival.append(data.val().nextArrival);
+		//console.log(moment(nextArrival, 'HH:mm'));
+			//.format('hh:mm a'));
 
 		$("tbody").append(r);
 
