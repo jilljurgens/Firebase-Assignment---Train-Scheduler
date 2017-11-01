@@ -65,11 +65,10 @@ $("#submit-train").on("click", function(snapshot){
 		r.append(frequency);
 		//var nextArrival= $("<td>");
 		//nextArrival.append(data.val().nextArrival);
-		//
+		var firstTrain = $("<td>");
 		var firstTrain = moment(data.val().nextArrival, "HH:mm");
 		console.log(firstTrain);
-		//var hour12 = moment(firstTrain, "HH:mm").format("hh:mm");
-		//console.log(hour12);
+
 		var currentTime = moment();
 		console.log(currentTime);
 
@@ -82,8 +81,14 @@ $("#submit-train").on("click", function(snapshot){
 		while (firstTrain < currentTime);
 		//nextArrival.append(firstTrain.format("HH:mm"));
 		console.log(firstTrain.format("hh:mm a"));
+		r.append(firstTrain.format("hh:mm a"));
 		//nextArrival.append(data.val().nextArrival)
 		//r.append(firstTrain);
+
+		var minutesAway = $("<td>");
+		minutesAway = firstTrain - currentTime;
+		console.log(moment(minutesAway).minutes());
+		r.append(moment(minutesAway).minutes());
 
 
 
