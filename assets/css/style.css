@@ -1,0 +1,14 @@
+.jumbotron, .panel-default >.panel-heading{
+ 	background-color: darkcyan;
+ 	text-align: center;
+ 	color: white
+}
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+th {
+	font-size: 22px;
+}
+td {
+	font-size: 17px;
+}

@@ -20,7 +20,7 @@ var minutesAway = "";
 
 $("#submit-train").on("click", function(snapshot){
 	event.preventDefault();
-//grab the values from the input and save them to the variable, then clear out out input form
+	//grab the values from the input and save them to the variable, then clear out out input form
 	name = $("#train-name").val().trim();
 	$("#train-name").val("");
 	destination = $("#destination").val().trim();
@@ -30,14 +30,9 @@ $("#submit-train").on("click", function(snapshot){
 	nextArrival = $("#firstTrainTime").val().trim();
 	$("#firstTrainTime").val("");
 
-	console.log(name);
-	console.log(frequency);
-	console.log(destination);
-	console.log(nextArrival);
 
 
-
-
+	//push values to firebase
 	database.ref().push({
 		name: name,
 		destination: destination,
@@ -46,79 +41,59 @@ $("#submit-train").on("click", function(snapshot){
 	});
 });
 
-//dynamically create a table from jquery using tbody
+	//dynamically create a table from jquery using tbody
 
 	var trains = firebase.database().ref();
 	
 	trains.on('child_added', function(data){
-		console.log(data.val());
-		console.log(data.val().name);
+		//this creates the row that I'll append the <td>'s to
 		r = $("<tr>");
+		//create a td using jquery and append values for each item in the row
 		var name = $("<td>");
 		name.append(data.val().name);
 		r.append(name);
+		
 		var destination = $("<td>");
 		destination.append(data.val().destination);
 		r.append(destination);
+		
 		var frequency = $("<td>");
 		frequency.append(data.val().frequency);
 		r.append(frequency);
-		//var nextArrival= $("<td>");
-		//nextArrival.append(data.val().nextArrival);
-		var firstTrain = $("<td>");
-		var firstTrain = moment(data.val().nextArrival, "HH:mm");
-		console.log(firstTrain);
 
+
+		var firstTrainElement = $("<td>");
+		var firstTrain = moment(data.val().nextArrival, "HH:mm");
+
+		// This moment.js value will be used to calulate the minutes away and the next train time
 		var currentTime = moment();
-		console.log(currentTime);
+
 
 		var frequency = data.val().frequency;
-		console.log(frequency);
-
+	
+		//take the train start time and add the frequency to it until it's a time in the future
 		do {
 		firstTrain.add(frequency, 'm') 
 		}
 		while (firstTrain < currentTime);
-		//nextArrival.append(firstTrain.format("HH:mm"));
-		console.log(firstTrain.format("hh:mm a"));
-		r.append(firstTrain.format("hh:mm a"));
-		//nextArrival.append(data.val().nextArrival)
-		//r.append(firstTrain);
 
-		var minutesAway = $("<td>");
+		firstTrainElement.append(firstTrain.format("hh:mm a"));
+
+		r.append(firstTrainElement);
+
+		//calculate how many minutes the next train time is from now
+		var minutesAwayElement = $("<td>");
 		minutesAway = firstTrain - currentTime;
-		console.log(moment(minutesAway).minutes());
-		r.append(moment(minutesAway).minutes());
+		minutesAway = moment(minutesAway).minutes();
+		minutesAwayElement.append(minutesAway);
+		r.append(minutesAwayElement);
 
 
 
-//**************** get date difference ************************
 
-  /*    var addDate = moment(data.val().startDate);
-		console.log(addDate);
-		var dateTime = new Date(moment());
-		var interimDate = moment(dateTime).format("MM/DD/YY");
-		var endDate = moment(endDate);
-  		//console.log('Difference is ', endDate.diff(addDate, 'months'), 'months');
-  		var diffDate = endDate.diff(addDate, 'months')
-  		console.log(diffDate);  */
 
-//*****************************************************************
-		//console.log(moment("13:45", "HH:mm A'").format("hh:mm"));
-		//console.log(moment(nextArrival, 'HH:mm').format('hh:mm a'));
-		//var nextTrain = moment(data.val().nextArrival), 'HH:mm'.format('hh:mm a');
-		//console.log(nextTrain);
-		//nextArrival.append(data.val().nextArrival);
-		//console.log(moment(nextArrival, 'HH:mm'));
-			//.format('hh:mm a'));
-
+		//append all of the table data to the table
 		$("tbody").append(r);
-
-
-
-
-
-
 
 
 });
